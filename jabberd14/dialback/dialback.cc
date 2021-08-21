@@ -550,7 +550,7 @@ static void dialback_handle_discoinfo(db d, dpacket dp, xmlnode query, jid to) {
             time_t last = md->last;
 
             if (gmtime_r(&last, &last_utc)) {
-                char last_str[36];
+               char last_str[36+100];                  //Shahid: added +100 because of compilation error of out of buffer
 
                 snprintf(last_str, sizeof(last_str),
                          "%s %d-%02d-%02d %02d:%02d:%02d UTC",
@@ -878,7 +878,7 @@ static void dialback_handle_discoinfo(db d, dpacket dp, xmlnode query, jid to) {
             time_t last = md->last;
 
             if (gmtime_r(&last, &last_utc)) {
-                char last_str[36];
+               char last_str[36 + 100];            //Shahid: added +100 because of compilation error
 
                 snprintf(last_str, sizeof(last_str),
                          "%s: %d-%02d-%02d %02d:%02d:%02d UTC",

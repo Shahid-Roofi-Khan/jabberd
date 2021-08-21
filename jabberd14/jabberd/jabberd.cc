@@ -281,6 +281,7 @@ int main(int argc, const char **argv) {
 
         user = getpwnam(run_as_user);
         if (user == NULL) {
+            if (cmd != NULL)                                                //Shahid: condition added because it was not workign without
             fprintf(stderr, "Unable to lookup user %s.\n", cmd);
             exit(1);
         }

@@ -30,3 +30,6 @@ Makefile.in
 /jabberd14/man/jabber.xml.5
 /jabberd14/man/jabberd.8
 /jabberd14/xdb_file/xdbfiletool
+jabberd14/.vscode/targets.log
+jabberd14/.vscode/dryrun.log
+jabberd14/.vscode/configurationCache.log

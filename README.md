@@ -1,3 +1,16 @@
+# Overview
+
+This is my fork of jabberd, that i will use in'sha'Allah
+
+## usage
+
+autoreconf -i
+./configure --prefix=/usr
+make
+sudo make install
+
+
+# original notes:
 jabberd
 =======
 
