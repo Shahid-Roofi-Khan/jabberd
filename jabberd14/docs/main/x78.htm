@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Base Modules</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="A Guide to the Jabber Server 2.0 Architecture"
+HREF="book1.htm"><LINK
+REL="UP"
+TITLE="Configuration File"
+HREF="c55.htm"><LINK
+REL="PREVIOUS"
+TITLE="Delivery Trees"
+HREF="x64.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>A Guide to the Jabber Server 2.0 Architecture</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x64.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Configuration File</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN78"
+>Base Modules</A
+></H1
+>        
+        <P
+>Base Modules help Jabberd components talk with the jabberd server, as well as describe how the component will load, and what host names it will respond to</P
+>
+        <DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN81"
+>General Base Modules</A
+></H2
+>
+            <DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN83"
+>base_host</A
+></H3
+>                
+                <P
+>Base host defines a way to associate an instance with a certain hostname in the delivery tree.</P
+>
+                <DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN86"
+></A
+><P
+><B
+>Example 4-1. base_host example</B
+></P
+>
+                    <P
+>hostjabber.org/host</P
+>
+                    <P
+>host*.jabber.org/host</P
+>
+                    <P
+>host/</P
+>
+                </DIV
+>
+                <P
+>The above example shows a few ways that base_host can be used in a config file.  The first will simply register that instance to recieve packets for jabber.org.  NOTE that you can have any number of host/ tags in an instance.</P
+>
+                <P
+>The Second example will register the instance to match ANY subdomain of jabber.org.  i.e. aim.jabber.org will match, and so will icq.jabber.org.  Note that this isn't REAL regex matching, it will only work to match any subdomain</P
+>
+                <P
+>The last example shows how to register an instance to recieve packets for ANY host.  this is usefull for a server-to-server component, for example, where it will be able to send out any packets for a host that isn't its own.</P
+>
+            </DIV
+>
+        </DIV
+>
+        <DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN94"
+>I/O Base Modules</A
+></H2
+>
+           <DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN96"
+>base_load</A
+></H3
+>                
+                <P
+>base_load will dynamically load a .so file into the process at run time.  NOTE that the .so must have been written to work with jabberd.  It also provides several utility functions for the .so file to work with when it is loaded.</P
+>
+                <DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN99"
+></A
+><P
+><B
+>Example 4-2. base_load example</B
+></P
+>
+                    <P
+>load
+                    my_funcexample.so/my_func
+                    /load</P
+>
+                    <P
+>load main="loader"
+                     loaderexample.so/loader
+                      modulemodule.so/module
+                    /load</P
+>
+                </DIV
+>
+                <P
+>In the first example above, we have a simple load statement.  Jabberd will simply load the example.so file into the current process (in memory) and call the my_func() function inside of the .so</P
+>
+                <P
+>The second example is slightly more complex, and could have consisted of any number of module.so files/functions.  in this case, the loader() function will get a copy of all the other modules, and loader() will be responsible for loading them all, and calling the init functions</P
+>
+            </DIV
+>
+            <DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN105"
+>base_connect</A
+></H3
+>                
+                <P
+>Base_connect's main job is to link seperate jabberd processes together.  These processes may or may not be on the same servers.  Used in this way, the other jabberd process would have a matching base_accept instance to accept the incoming connection</P
+>
+                <P
+>This may also be used to connect to any type of other component that is set to listen on a port for the jabberd connection, but it's more often used to link jabberds together</P
+>
+                <DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN109"
+></A
+><P
+><B
+>Example 4-3. base_connect example</B
+></P
+>
+                    <P
+>connect
+                      ip12.34.56.78/ip
+                      port7001/port
+                      secretshh../secret
+                    /connect</P
+>
+                </DIV
+>
+                <P
+>In this example, we are setting base_connect to make a socket connection to 12.34.56.78 on port 7001.  it will use the secret "shh.." to handshake with the listener on the other end.</P
+>
+                <P
+>Note, this CANNOT be used to talk with previous versions of the jabber server.  (pre 1.1)</P
+>
+                <P
+>See below for a description of the base_accept handshake process</P
+>
+            </DIV
+>
+            <DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN115"
+>base_accept</A
+></H3
+>                
+                <P
+>base_accept is the opposite of base_connect.  it is used to listen on a certain port and ip for an incoming connection.  When a connection is received, it verifies the caller knows the correct secret, and then starts sending the caller packets.</P
+>
+                <DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN118"
+></A
+><P
+><B
+>Example 4-4. base_accept example</B
+></P
+>
+                    <P
+>See base_connect for the syntax of connect/
+                    sections.</P
+>
+                </DIV
+>
+                <P
+>In addition to being able to recieve base_connect connections, this can also be used to listen for libetherx connections (on a port other than 5269).  This can be used to connect older (1.0) transports to Jabberd</P
+>
+                <P
+>There are a few caveats to watch out for with base_accept.  Most of them have to do with being able to connect a process to base_accept, and don't need to be worried about by the admin.  First, to connect a single transport to base_accept, you will need to set the instance's id attribut to the host name of the transport.  for example, a transport running as aim.jabber.org will have to have it's instance id="aim.jabber.org".  in the stream header, only the xmlns "jabber:component:accept" is valid.  and the to attribute must be set to YOUR hostname, i.e. aim.jabber.org.  This is a subtle point, and works slightly different than the 1.0 transports, since the transport is now an "internal" object to jabberd.</P
+>
+                <P
+>In addition, transports can register for a one-way only connection, by putting their hostname, "aim.jabber.org" in the from attribute.</P
+>
+                <P
+>The Handshake is created by Sha1 hashing the stream header with the secret, and putting it inside a handshake/ tag.  you may also register at this point to recieve an alternate host name, by putting it in a host attribute of the handshake.  this is only usefull for processes that fork, and connect back to base_accept multiple times, and used in conjunction with the </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x64.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Delivery Trees</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c55.htm"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

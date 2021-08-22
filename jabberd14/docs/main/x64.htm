@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Delivery Trees</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="A Guide to the Jabber Server 2.0 Architecture"
+HREF="book1.htm"><LINK
+REL="UP"
+TITLE="Configuration File"
+HREF="c55.htm"><LINK
+REL="PREVIOUS"
+TITLE="Configuration File"
+HREF="c55.htm"><LINK
+REL="NEXT"
+TITLE="Base Modules"
+HREF="x78.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>A Guide to the Jabber Server 2.0 Architecture</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c55.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Configuration File</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x78.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN64"
+>Delivery Trees</A
+></H1
+>		
+		<P
+>The Jabberd config file contains 3 main Delivery Trees:</P
+>
+		<P
+></P
+><UL
+><LI
+><P
+>log Tree</P
+></LI
+><LI
+><P
+>xdb Tree</P
+></LI
+><LI
+><P
+>service Tree</P
+></LI
+></UL
+>
+        <P
+>Each tree only handles certain types of packets within jabberd.  The Log Tree will only handle packets of type log/, the xdb Tree only handles xdb/ type packets, and the service tree handles all the others: message/, presence/, iq/, and the internal route/ packets.</P
+>
+        <P
+>Each tree is further divided by host name.  An instance in the tree may register for a certain host, or it may register with host/ to recieve packets for ANY host.  If an incoming packet cannot find a delivery tree, the packet is bounced with a 502 error. NOTE also that the deliver logic will use the instances id attribute as a valid host name to deliver to</P
+>
+        <P
+>If more than one instance register for the same host name, each instance will get a copy of the packet, and the "best" return value will be used for that packet.  In this case, if all instances r_PASS on the packet, it will bounce with a 502, but if at least one instance handles the packet, then it is handled.</P
+>
+        <P
+>Furthermore, an instance may register phandlers against those hostnames.  phandlers describe when in the delivery logic, the instance will get those packets. an instance may register more than one phandler for the same host name, and packets are delivered based on the order the instance wants.  The orders are: o_PRECOND,o_COND,o_PREDELIVER, and o_DELIVER</P
+>
+	</DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c55.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x78.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuration File</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c55.htm"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Base Modules</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
