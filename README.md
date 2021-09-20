@@ -1,6 +1,6 @@
 # Overview
 
-This is my fork of jabberd, that i will use in'sha'Allah
+This is my fork of jabberd, but i realized, its not useful to build up on this.
 
 ## usage
 
